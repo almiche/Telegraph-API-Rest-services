@@ -1,0 +1,4 @@
+production: 
+  clients: 
+    default: 
+      uri: "mongodb://mike:test123@ds137882.mlab.com:37882/mike"
