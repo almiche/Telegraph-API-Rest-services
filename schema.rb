@@ -15,7 +15,15 @@ class Correspondance
 end
 
 
+class User 
+  include Mongoid::Document
 
+  field :user_name,type: String
+  field :public_key,type: String
+  field :conversation_ids,type: Array
+  field :password,type: String
+
+end
 
 
 
