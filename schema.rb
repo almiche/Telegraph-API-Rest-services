@@ -21,7 +21,8 @@ class User
   field :user_name,type: String
   field :public_key,type: String
   field :conversation_ids,type: Array
-  field :password,type: String
+  field :password_hash,type: String
+  field :password_salt,type: String
 
 end
 
