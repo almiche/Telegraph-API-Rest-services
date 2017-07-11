@@ -22,6 +22,7 @@ helpers do
   
 end
 
+#route to login
 post "/signup" do
   password_salt = BCrypt::Engine.generate_salt
   password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
@@ -35,6 +36,7 @@ post "/signup" do
   puts "Current username is #{session}"
 end
 
+#route to login
 post "/login" do
     user = User.find_by(user_name: params[:username])
     if user
@@ -57,7 +59,7 @@ end
 #Route used for sending telegrams
 get '/send' do
     user = params['user']
-    if user == session[:username]
+    if session
     morse_message = params['message']
     mes = decode(morse_message)
     reciever = params['to']
@@ -77,15 +79,8 @@ get '/conversation' do
 
 end
 
-get '/newuser' do 
-    user = params['user']
-    keybase_user=params['keybase']
-    password = params['user']
-    new_user(user,keybase_user,password_hash,password_salt)
-
-end
-
 def new_user(user_name,keybase_username,password_hash,password_salt)
+    #Fetch the user's public key from keybase.io
     url = "https://keybase.io/_/api/1.0/user/lookup.json?usernames=#{keybase_username}" 
     result = JSON.parse(Net::HTTP.get(URI.parse(url)))
     username_from_keybase = p result["them"][0]["basics"]["username"]
