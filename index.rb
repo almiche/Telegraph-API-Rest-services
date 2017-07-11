@@ -31,9 +31,9 @@ post "/signup" do
   new_user(user,keybase_user,password_hash,password_salt)
   
   session[:username] = params[:username]
-  word = session[:username]
+  $current_user = session[:username]
 
-  puts "Current username is #{session}"
+  puts "Current username is #{$current_user}"
 end
 
 #route to login
@@ -45,7 +45,8 @@ post "/login" do
         password_salt = user.password_salt
     if password_hash== BCrypt::Engine.hash_secret(params[:password], password_salt)
       session[:username] = params[:username]
-      puts "Succesful login!"
+      $current_user = session[:username]
+      puts "Succesful login! #{$current_user}"
     end
 
     end
@@ -59,12 +60,12 @@ end
 #Route used for sending telegrams
 get '/send' do
     user = params['user']
-    if session
+    if $current_user 
     morse_message = params['message']
     mes = decode(morse_message)
     reciever = params['to']
     puts "#{mes}"
-    new_message(user,reciever,decode(morse_message),morse_message)
+    new_message($current_user,reciever,decode(morse_message),morse_message)
     else
         puts "You are not authenticated to do this action"
     end
@@ -74,9 +75,8 @@ end
 #Route to recieve telegrams
 get '/conversation' do
     #We want to return the correspondance between these to users
-    current_user=params['user']
-    Correspondance.collection.find({ user_name: current_user }).select.to_json
-
+    convos = Correspondance.collection.find({ user_name: $current_user }).select.to_json
+    convos
 end
 
 def new_user(user_name,keybase_username,password_hash,password_salt)
