@@ -19,7 +19,17 @@ GEM
     mongoid (6.2.0)
       activemodel (~> 5.1)
       mongo (>= 2.4.1, < 3.0.0)
+    mustermann (1.0.0)
+    rack (2.0.3)
+    rack-protection (2.0.0)
+      rack
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
     thread_safe (0.3.6)
+    tilt (2.0.7)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
 
@@ -30,6 +40,7 @@ DEPENDENCIES
   bcrypt
   json
   mongoid
+  sinatra
 
 BUNDLED WITH
    1.15.1
