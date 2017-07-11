@@ -5,3 +5,4 @@ source "https://rubygems.org"
 gem 'mongoid'
 gem 'json'
 gem 'bcrypt'
+gem 'sinatra'
