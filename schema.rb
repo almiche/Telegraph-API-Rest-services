@@ -8,6 +8,7 @@ Mongoid.load!('mongoid.yml', :production)
 #key will denote the person who can decrypt message
 class Correspondance
     include Mongoid::Document
+    include Mongoid::Attributes::Dynamic
 
   field :user_name,type: String
   field :to,type: String
@@ -20,6 +21,7 @@ end
 
 class User 
   include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
 
   field :user_name,type: String
   field :public_key,type: String
