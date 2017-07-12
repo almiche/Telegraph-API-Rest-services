@@ -79,6 +79,13 @@ get '/conversation' do
     convos
 end
 
+#return public key of any user
+get '/publickey' do
+    user = params['user']
+    key = User.find_by(user_name:user).public_key
+    key
+end
+
 def new_user(user_name,keybase_username,password_hash,password_salt)
     #Fetch the user's public key from keybase.io
     url = "https://keybase.io/_/api/1.0/user/lookup.json?usernames=#{keybase_username}" 
