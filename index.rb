@@ -26,8 +26,8 @@ end
 post "/signup" do
   password_salt = BCrypt::Engine.generate_salt
   password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
-  user = params['user']
-  keybase_user=params['keybase']
+  user = params[:username]
+  keybase_user=params[:keybase]
   new_user(user,keybase_user,password_hash,password_salt)
   
   session[:username] = params[:username]
@@ -63,9 +63,13 @@ get '/send' do
     if $current_user 
     morse_message = params['message']
     mes = decode(morse_message)
-    reciever = params['to']
-    puts "#{mes}"
-    new_message($current_user,reciever,decode(morse_message),morse_message)
+    to = params['to']
+
+    sender = User.find_by(user_name:$current_user)
+    recipient = User.find_by(user_name:to)
+    newly_made =new_message($current_user,reciever,decode(morse_message),morse_message)
+    chat_id = newly_made._id
+    puts "#{chat_id}"
     else
         puts "You are not authenticated to do this action"
     end
@@ -95,13 +99,15 @@ def new_user(user_name,keybase_username,password_hash,password_salt)
 
     puts "#{public_key}"
 
-    User.create(
+    noob = User.create(
         user_name:user_name,
         public_key:public_key,
-        conversation_ids:[],
+        conversation_ids:{},
         password_hash:password_hash,
         password_salt:password_salt
     )
+
+    noob
 end
 
 def new_message(user_name,to,decoded_message,coded_message)
