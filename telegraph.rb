@@ -4,8 +4,8 @@ require 'json'
 NewLetter='|'
 NewWordDelimiter= ';'
 
-file= File.read('alphaToMorse.JSON')
-file= File.read('morseToalpha.JSON')
+file= File.read('alphaToMorse.json')
+file= File.read('morseToalpha.json')
 $alpha_to_morse=JSON.parse(file)
 $morse_to_alpha=JSON.parse(file)
 
