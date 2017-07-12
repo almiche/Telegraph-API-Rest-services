@@ -7,11 +7,11 @@ Deployed on heroku at the following uri: https://telegraph-rest-api.herokuapp.co
 ## Curl commands
 At the moment there is no front end implementation as such you can curl commands in order to interact with the different routes
 
-*Signup
+* Signup
 ```bash
   curl -XPOST -d 'username=<Username>&password=<Password>&keybase=<Keybase Username>' 'https://telegraph-rest-api.herokuapp.com/signup'
  ```
-*Login
+* Login
 ```bash
  curl -XPOST -d 'username=<Username>&password=<Password>' 'https://telegraph-rest-api.herokuapp.com/login'
 ```
@@ -20,10 +20,13 @@ At the moment there is no front end implementation as such you can curl commands
 curl -XGET -d 'user=<Username>' 'https://telegraph-rest-api.herokuapp.com/publickey'
 ```
 
-*Logout 
+* Logout 
 ```bash
 curl -XGET 'https://telegraph-rest-api.herokuapp.com/logout'
 ```
+* Send Message
+ COMING SOON
+
 ## Future additions
 
 We are currently looking into expanding our services to include morse code in the future
