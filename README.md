@@ -30,3 +30,6 @@ curl -XGET 'https://telegraph-rest-api.herokuapp.com/logout'
 ## Future additions
 
 We are currently looking into expanding our services to include morse code in the future
+
+
+A Famingo© Labs Inc. product R&D division
