@@ -4,11 +4,10 @@ Web server for which is capable of recieving rest calls and storing messages in 
 
 Deployed on heroku at the following uri: https://telegraph-rest-api.herokuapp.com/
 
-
-##Curl commands
+## Curl commands
 At the moment there is no front end implementation as such you can curl commands in order to interact with the different routes
 
-* Signup
+*Signup
 ```bash
   curl -XPOST -d 'username=<Username>&password=<Password>&keybase=<Keybase Username>' 'https://telegraph-rest-api.herokuapp.com/signup'
  ```
@@ -25,3 +24,6 @@ curl -XGET -d 'user=<Username>' 'https://telegraph-rest-api.herokuapp.com/public
 ```bash
 curl -XGET 'https://telegraph-rest-api.herokuapp.com/logout'
 ```
+## Future additions
+
+We are currently looking into expanding our services to include morse code in the future
