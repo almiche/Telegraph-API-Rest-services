@@ -47,6 +47,7 @@ post "/login" do
       session[:username] = params[:username]
       $current_user = session[:username]
       puts "Succesful login! #{$current_user}"
+      "Succesful login! #{$current_user}"
     end
 
     end
