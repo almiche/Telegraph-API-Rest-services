@@ -67,6 +67,8 @@ get '/send' do
 
     sender = User.find_by(user_name:$current_user)
     recipient = User.find_by(user_name:to)
+
+    #check if Correspondance doesn't already exist
     newly_made =new_message($current_user,reciever,decode(morse_message),morse_message)
     chat_id = newly_made._id
     puts "#{chat_id}"
