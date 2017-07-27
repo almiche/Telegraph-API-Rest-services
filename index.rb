@@ -3,6 +3,7 @@ require_relative 'schema.rb'
 require_relative 'telegraph.rb'
 require 'net/http'
 require 'bcrypt'
+require 'pry'
 
 enable :sessions
 
@@ -22,7 +23,7 @@ helpers do
   
 end
 
-#route to login
+#route to signup
 post "/signup" do
   password_salt = BCrypt::Engine.generate_salt
   password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
@@ -53,6 +54,7 @@ post "/login" do
 end
 
 get "/logout" do
+    binding.pry
   session[:username] = nil
   redirect "/"
 end
@@ -62,15 +64,17 @@ get '/send' do
     user = params['user']
     if $current_user 
     morse_message = params['message']
-    mes = decode(morse_message)
     to = params['to']
 
     sender = User.find_by(user_name:$current_user)
     recipient = User.find_by(user_name:to)
+     
+    puts "#{sender} SENDER IS"
 
-    #check if Correspondance doesn't already exist
-    newly_made =new_message($current_user,reciever,decode(morse_message),morse_message)
+    #TODO:check if Correspondance doesn't already exist
+    newly_made =new_message(sender._id,recipient._id,{sender._id.to_str => morse_message},{sender._id.to_str => morse_message})
     chat_id = newly_made._id
+    User.where(_id:sender._id).update(correspondance_ids:chat_id)
     puts "#{chat_id}"
     else
         puts "You are not authenticated to do this action"

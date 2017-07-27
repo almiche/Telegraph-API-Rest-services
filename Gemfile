@@ -5,4 +5,6 @@ source "https://rubygems.org"
 gem 'mongoid'
 gem 'json'
 gem 'bcrypt'
+gem 'pry'
+gem 'pry-byebug'
 gem 'sinatra'
