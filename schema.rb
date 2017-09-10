@@ -10,11 +10,8 @@ class Correspondance
     include Mongoid::Document
     include Mongoid::Attributes::Dynamic
 
-  field :user_name,type: String
-  field :to,type: String
-  field :date, type: Date
-  field :decodedmessage, type: Hash
-  field :codedmessage, type: Hash
+  field :participants,type:Array #{User1 <= codedmessage,User2 <= coded_message}
+  field :date, type: Time
 
 end
 
@@ -25,7 +22,6 @@ class User
 
   field :user_name,type: String
   field :public_key,type: String
-  field :correspondance_ids,type: Array
   field :password_hash,type: String
   field :password_salt,type: String
 

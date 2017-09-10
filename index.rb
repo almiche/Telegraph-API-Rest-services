@@ -62,21 +62,22 @@ end
 
 #Route used for sending telegrams
 get '/send' do
-    user = params['user']
+    user = params['user'] #seems redundant since user is already authenticated
     if $current_user 
-    morse_message = params['message']
     to = params['to']
+    signed_sender = params['sender_coded']
+    signed_to = params['to_coded']
 
     sender = User.find_by(user_name:$current_user)
     recipient = User.find_by(user_name:to)
-     
-    puts "#{sender} SENDER IS"
+    
+    #oids are inherently unique
+    participants = [{sender._id.to_str => signed_sender},{recipient._id.to_str => signed_to}]
+    
+    puts "#{participants}"
 
     #TODO:check if Correspondance doesn't already exist
-    newly_made =new_message(sender._id,recipient._id,{sender._id.to_str => morse_message},{sender._id.to_str => morse_message})
-    chat_id = newly_made._id
-    User.where(_id:sender._id).update(correspondance_ids:chat_id)
-    puts "#{chat_id}"
+    newly_made =new_message(participants)
     else
         puts "You are not authenticated to do this action"
     end
@@ -85,6 +86,19 @@ end
 
 #Route to recieve telegrams
 get '/conversation' do
+    sender = User.find_by(user_name:$current_user)
+    recipient = User.find_by(user_name:to)
+
+    current = sender._id
+    other =receipient._id
+
+    current_key = sender.public_key
+
+    Correspondance.find_by()
+
+    
+
+
     #We want to return the correspondance between these to users
     convos = Correspondance.collection.find({ user_name: $current_user }).select.to_json
     convos
@@ -109,7 +123,6 @@ def new_user(user_name,keybase_username,password_hash,password_salt)
     noob = User.create(
         user_name:user_name,
         public_key:public_key,
-        conversation_ids:{},
         password_hash:password_hash,
         password_salt:password_salt
     )
@@ -117,14 +130,11 @@ def new_user(user_name,keybase_username,password_hash,password_salt)
     noob
 end
 
-def new_message(user_name,to,decoded_message,coded_message)
+def new_message(participants)
 Correspondance.create(
 
-    user_name:user_name,
-    to:to,
-    date:Time.now.utc,
-    decodedmessage:decoded_message,
-    codedmessage:coded_message
+    participants:participants,
+    date:Time.now.iso8601,
 )
 
 end
