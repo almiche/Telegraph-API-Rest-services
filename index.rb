@@ -78,6 +78,9 @@ get '/send' do
 
     #TODO:check if Correspondance doesn't already exist
     newly_made =new_message(participants)
+    
+    "Hello there !!!!"
+
     else
         puts "You are not authenticated to do this action"
     end
