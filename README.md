@@ -25,7 +25,9 @@ curl -XGET -d 'user=<Username>' 'https://telegraph-rest-api.herokuapp.com/public
 curl -XGET 'https://telegraph-rest-api.herokuapp.com/logout'
 ```
 * Send Message
- COMING SOON
+```bash
+curl -XGET 'https://telegraph-rest-api.herokuapp.com/send?user=<Username>&to=<To_Username>&sender_coded=<Message>$to_coded=<Message>'
+```
 
 ## Future additions
 
