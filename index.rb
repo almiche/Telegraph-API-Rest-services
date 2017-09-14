@@ -72,14 +72,14 @@ get '/send' do
     recipient = User.find_by(user_name:to)
     
     #oids are inherently unique
-    participants = [{sender._id.to_str => signed_sender},{recipient._id.to_str => signed_to}]
+    messages = [{sender._id.to_str => signed_sender},{recipient._id.to_str => signed_to}]
     
-    puts "#{participants}"
+    puts "#{messages}"
 
     #TODO:check if Correspondance doesn't already exist
-    newly_made =new_message(participants)
+    newly_made =new_message(messages)
     
-    "Hello there !!!!"
+    "Message has been sent!"
 
     else
         puts "You are not authenticated to do this action"
@@ -88,23 +88,13 @@ get '/send' do
 end    
 
 #Route to recieve telegrams
-get '/conversation' do
-    sender = User.find_by(user_name:$current_user)
-    recipient = User.find_by(user_name:to)
+get '/conversations' do
+    sender = User.find_by(user_name:"almiche")
+    current_id = sender._id
 
-    current = sender._id
-    other =receipient._id
+    Correspondance.where(:participants )
 
     current_key = sender.public_key
-
-    Correspondance.find_by()
-
-    
-
-
-    #We want to return the correspondance between these to users
-    convos = Correspondance.collection.find({ user_name: $current_user }).select.to_json
-    convos
 end
 
 #return public key of any user
@@ -133,10 +123,11 @@ def new_user(user_name,keybase_username,password_hash,password_salt)
     noob
 end
 
-def new_message(participants)
+def new_message(messages)
 Correspondance.create(
-
-    participants:participants,
+    sender:messages[0].keys.join,
+    reciever:messages[1].keys.join,
+    messages:messages,
     date:Time.now.iso8601,
 )
 
