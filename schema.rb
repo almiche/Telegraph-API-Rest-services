@@ -10,7 +10,9 @@ class Correspondance
     include Mongoid::Document
     include Mongoid::Attributes::Dynamic
 
-  field :participants,type:Array #{User1 <= codedmessage,User2 <= coded_message}
+  field :sender,type:String,
+  field :reciever,type:String,
+  field :messages,type:Array #{User1 <= codedmessage,User2 <= coded_message}
   field :date, type: Time
 
 end
