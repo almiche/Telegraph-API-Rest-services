@@ -89,12 +89,18 @@ end
 
 #Route to recieve telegrams
 get '/conversations' do
-    sender = User.find_by(user_name:"almiche")
+    sender = User.find_by(user_name:$current_user)
     current_id = sender._id
+    reciever = User.find_by(user_name:(params['reciever']))
+    reciever_id = reciever._id
 
-    Correspondance.where(:participants )
-
-    current_key = sender.public_key
+    response_sender_reciever = Correspondance.where(sender:current_id,reciever:reciever_id).to_json
+    response_reciever_sender = Correspondance.where(sender:reciever_id,reciever:current_id).to_json
+    convo = response_sender_reciever + response_reciever_sender
+    
+    convo
+    
+    # current_key = sender.public_key
 end
 
 #return public key of any user
