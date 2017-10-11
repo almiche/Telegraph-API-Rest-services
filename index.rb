@@ -77,8 +77,6 @@ end
 #Route used for sending telegrams
 get '/send' do
     user = params['user'] #seems redundant since user is already authenticated
-    userr = session[:username]
-    puts "#{userr}" 
     #if session[:username] 
     #Temporary until session problem is fixed
     if true
@@ -86,7 +84,8 @@ get '/send' do
     signed_sender = params['sender_coded']
     signed_to = params['to_coded']
 
-    sender = User.find_by(user_name:session[:username])
+    #sender = User.find_by(user_name:session[:username])
+    sender = User.find_by(user_name:user)
     recipient = User.find_by(user_name:to)
     
     #oids are inherently unique
