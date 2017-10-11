@@ -5,7 +5,12 @@ require 'net/http'
 require 'bcrypt'
 require 'pry'
 
-enable :sessions
+
+
+
+class MyApp < Sinatra::Application
+
+    enable :sessions
 
 helpers do
   
@@ -29,12 +34,16 @@ post "/signup" do
   password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
   user = params[:username]
   keybase_user=params[:keybase]
+  begin 
+    User.find_by(user_name: params[:username])
+    "User already exists!"
+  rescue  
   new_user(user,keybase_user,password_hash,password_salt)
-  
   session[:username] = params[:username]
-  $current_user = session[:username]
 
-  puts "Current username is #{$current_user}"
+  puts "Current username is #{session[:username] }"
+
+  end
 end
 
 #route to login
@@ -46,29 +55,34 @@ post "/login" do
         password_salt = user.password_salt
     if password_hash== BCrypt::Engine.hash_secret(params[:password], password_salt)
       session[:username] = params[:username]
-      $current_user = session[:username]
-      puts "Succesful login! #{$current_user}"
-      logger.info "Succesful login! #{$current_user}"
+      puts "Succesful login! #{session[:username]}"
+      "Succesful login! #{session[:username]}"
     end
 
     end
 end
 
 get "/logout" do
-    binding.pry
+    #binding.pry
   session[:username] = nil
-  redirect "/"
+  "You have been logged out"
+end
+
+get "/currentuser" do
+    "Current user is #{session[:username]}"
 end
 
 #Route used for sending telegrams
 get '/send' do
     user = params['user'] #seems redundant since user is already authenticated
-    if $current_user 
+    userr = session[:username]
+    puts "#{userr}" 
+    if session[:username] 
     to = params['to']
     signed_sender = params['sender_coded']
     signed_to = params['to_coded']
 
-    sender = User.find_by(user_name:$current_user)
+    sender = User.find_by(user_name:session[:username])
     recipient = User.find_by(user_name:to)
     
     #oids are inherently unique
@@ -138,3 +152,7 @@ Correspondance.create(
 )
 
 end
+
+end
+
+MyApp.run!
