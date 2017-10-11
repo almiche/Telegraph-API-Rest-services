@@ -107,7 +107,8 @@ end
 
 #Route to recieve telegrams
 get '/conversations' do
-    sender = User.find_by(user_name:$current_user)
+    #sender = User.find_by(user_name:session[:username])
+    sender = User.find_by(user_name:params[:username])
     current_id = sender._id
     reciever = User.find_by(user_name:(params['reciever']))
     reciever_id = reciever._id
