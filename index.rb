@@ -79,7 +79,9 @@ get '/send' do
     user = params['user'] #seems redundant since user is already authenticated
     userr = session[:username]
     puts "#{userr}" 
-    if session[:username] 
+    #if session[:username] 
+    #Temporary until session problem is fixed
+    if true
     to = params['to']
     signed_sender = params['sender_coded']
     signed_to = params['to_coded']
