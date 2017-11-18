@@ -1,6 +1,5 @@
 require 'sinatra'
-require_relative 'schema.rb'
-require_relative 'telegraph.rb'
+require_relative '../app/models/schema.rb'
 require 'net/http'
 require 'bcrypt'
 require 'pry'

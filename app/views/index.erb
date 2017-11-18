@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Reverse!</title>
+  </head>
+  <body>
+     <ul id="messages"></ul>
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript">
+
+      var ws_uri = location.href.replace(/^http/, 'ws');
+      var ws = new WebSocket(ws_uri);
+
+      ws.onopen = function () {
+        append_li('ws.onopen');
+        ws.send("Hello world");
+      }
+      ws.onmessage = function (msg) {
+        append_li('ws.onmessage: "' + msg.data + '" from server');
+      }
+      ws.onclose = function () {
+        append_li('ws.onclose');
+      }
+
+      $("#messageBox").on('click',function(event){
+        console.log("Press");
+        ws.send("Press");
+      })
+     
+    </script>
+    <input type="text" id="messageBox"></input>
+  </body>
+</html>

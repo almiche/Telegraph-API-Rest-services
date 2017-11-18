@@ -1,12 +1,12 @@
 require 'mongoid'
 
 
-Mongoid.load!('mongoid.yml', :production)
+Mongoid.load!('app/models/mongoid.yml', :production)
 
 #Both of the message fields will be encrypted using pgp
 #messages are hashes of key values pairs 
 #key will denote the person who can decrypt message
-class Correspondance
+class Correspondence
     include Mongoid::Document
     include Mongoid::Attributes::Dynamic
 
