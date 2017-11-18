@@ -4,31 +4,64 @@ require_relative 'telegraph.rb'
 require 'net/http'
 require 'bcrypt'
 require 'pry'
-
-
+require 'bundler'
 
 
 class MyApp < Sinatra::Application
-
+  
 use Rack::Session::Cookie, :key => 'rack.session',
 :path => '/',
 :secret => 'your_secret'
-
-helpers do
   
-  def login?
-    if session[:username].nil?
-      return false
-    else
-      return true
+  helpers do
+    
+    def login?
+      if session[:username].nil?
+        return false
+      else
+        return true
+      end
     end
+    
+    def username
+      return session[:username]
+    end
+    
   end
-  
-  def username
-    return session[:username]
-  end
-  
+
+Bundler.require
+Faye::WebSocket.load_adapter('thin')
+
+#For testing purposes to be removed
+get '/' do
+  "Hello World"
 end
+
+get '/messaging' do
+  if Faye::WebSocket.websocket?(request.env)
+    ws = Faye::WebSocket.new(request.env)
+
+    ws.on(:open) do |event|
+      puts 'On Open'
+      ws.send(session[:user])
+    end
+
+    ws.on(:message) do |msg|
+      puts "Gottem" 
+      ws.send(msg.data)  # Reverse and reply
+    end
+
+    ws.on(:close) do |event|
+      puts 'On Close'
+    end
+
+    ws.rack_response
+  else
+    erb :index
+  end
+end
+
+
 
 #route to signup
 post "/signup" do
@@ -79,7 +112,7 @@ get '/send' do
     user = params['user'] #seems redundant since user is already authenticated
     #if session[:username] 
     #Temporary until session problem is fixed
-    if true
+    if session[:username]
     to = params['to']
     signed_sender = params['sender_coded']
     signed_to = params['to_coded']
@@ -89,7 +122,7 @@ get '/send' do
     recipient = User.find_by(user_name:to)
     
     #oids are inherently unique
-    messages = [{sender._id.to_str => signed_sender},{recipient._id.to_str => signed_to}]
+    messages = [{session[:username].to_str => signed_sender},{recipient._id.to_str => signed_to}]
     
     puts "#{messages}"
 

@@ -8,3 +8,6 @@ gem 'bcrypt'
 gem 'pry'
 gem 'pry-byebug'
 gem 'sinatra'
+gem 'faye-websocket', require: 'faye/websocket'
+
+gem 'thin'
