@@ -17,4 +17,8 @@ class TelegramMapper
     @office.send_message(session,params)
   end
 
+  def current_user(session)
+    session[:username]
+  end
+
 end
